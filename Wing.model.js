@@ -2,20 +2,23 @@ import mongoose from 'mongoose';
 import parse from 'co-body';
 import { exec } from 'child_process';
 
-const Category = mongoose.model('Category', new mongoose.Schema({
-    name: {
-        type: String,
-        enum: ['weather', 'social_media', 'everything_else']
-    },
-    subcategories: [String]
-
-}));
+// const Category = mongoose.model('Category', new mongoose.Schema({
+//     name: {
+//         type: String,
+//         enum: ['weather', 'social_media', 'everything_else']
+//     },
+//     subcategories: [String]
+//
+// }));
 
 const Wing = mongoose.model('Wing', new mongoose.Schema({
     // wingId: Number,
     heading: String,
     story: String,
-    categories: [Category],
+    categories: {
+        type: String,
+        enum: ['weather', 'social_media', 'everything_else']
+    },
     impact: {
         type: Number,
         min: 0,

@@ -7,7 +7,7 @@ import mongoose from 'mongoose';
 console.log("asd");
 
 import config from './config';
-// import { getBulletins, postBulletin } from './Bulletin.model';
+import { getWings, postWing } from './Wing.model';
 
 const app = new Koa();
 const router = new KoaRouter({ prefix: '/api' });
@@ -20,12 +20,12 @@ run().catch(error => console.error(error.stack));
 
 app.use(serve(`${__dirname}/../app/build/`));
 
-// router.get('/bulletins', getBulletins);
-// router.post('/bulletin', postBulletin);
+router.get('/wings', getWings);
+router.post('/wing', postWing);
 
-// app
-//     .use(router.routes())
-//     .use(router.allowedMethods());
+app
+    .use(router.routes())
+    .use(router.allowedMethods());
 
 
 function startKoa() {

@@ -27,7 +27,7 @@ const Wing = mongoose.model('Wing', new mongoose.Schema({
     },
     source: {
         type: String,
-        enum: ['social_media', 'weather-scraper', 'flightcontrol']
+        enum: ['social_media', 'weather-scraper', 'flightcontrol', 'news']
     },
     received: { type: Date, default: Date.now },
     processed: Date,

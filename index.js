@@ -15,7 +15,7 @@ app.use(cors());
 const router = new KoaRouter({ prefix: '/api' });
 
 async function run() {
-    mongoose.connect('mongodb://localhost:32776/wingman');
+    mongoose.connect('mongodb://localhost:32768/wingman');
 }
 
 run().catch(error => console.error(error.stack));

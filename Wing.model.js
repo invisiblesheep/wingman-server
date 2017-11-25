@@ -36,7 +36,7 @@ const Wing = mongoose.model('Wing', new mongoose.Schema({
 
 
 export async function getWings(ctx) {
-    const results = await Bulletin.find();
+    const results = await Wing.find();
     ctx.body = JSON.stringify(results);
 }
 

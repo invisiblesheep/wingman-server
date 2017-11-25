@@ -40,7 +40,7 @@ const Wing = mongoose.model('Wing', new mongoose.Schema({
 
 
 export async function getWings(ctx) {
-    const results = await Wing.find();
+    const results = await Wing.find({status: 'waiting'});
     ctx.body = JSON.stringify(results);
 }
 
@@ -75,6 +75,8 @@ export async function postWing(ctx) {
 
 export async function processWing(ctx) {
     const parsed = await parse(ctx);
-    await Wing.update({_id: parsed.id}, { $set: {processed: parsed.processed, status: parsed.status }})
+    console.log(parsed);
+    await Wing.update({_id: parsed._id}, { $set: {processed: parsed.processed, status: parsed.status }});
+
     ctx.body = {data: 'updated'};
 }

@@ -1,5 +1,6 @@
 import Koa from 'koa';
 import KoaRouter from 'koa-router';
+const cors = require('@koa/cors');
 import parse from 'co-body';
 import serve from 'koa-static';
 import mongoose from 'mongoose';
@@ -7,21 +8,24 @@ import mongoose from 'mongoose';
 console.log("asd");
 
 import config from './config';
-import { getWings, postWing } from './Wing.model';
+import { getWings, postWing, getEvents, processWing } from './Wing.model';
 
 const app = new Koa();
+app.use(cors());
 const router = new KoaRouter({ prefix: '/api' });
 
 async function run() {
-    mongoose.connect('mongodb://localhost:27017 /test');
+    mongoose.connect('mongodb://localhost:32776/wingman');
 }
 
 run().catch(error => console.error(error.stack));
 
-app.use(serve(`${__dirname}/../app/build/`));
+app.use(serve(`${__dirname}/../build/`));
 
 router.get('/wings', getWings);
+router.get('/events', getEvents);
 router.post('/wing', postWing);
+router.post('/process', processWing);
 
 app
     .use(router.routes())

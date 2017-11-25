@@ -15,18 +15,19 @@ const Wing = mongoose.model('Wing', new mongoose.Schema({
     // wingId: Number,
     heading: String,
     story: String,
+    url: String,
     categories: {
         type: String,
-        enum: ['weather', 'social_media', 'everything_else']
+        enum: ['weather', 'strike']
     },
     impact: {
         type: Number,
         min: 0,
-        max: 5
+        max: 3
     },
     source: {
         type: String,
-        enum: ['scraper1', 'scraper2', 'scraper3']
+        enum: ['social_media', 'weather-scraper', 'flightcontrol']
     },
     received: { type: Date, default: Date.now },
     processed: Date,
@@ -40,6 +41,11 @@ const Wing = mongoose.model('Wing', new mongoose.Schema({
 
 export async function getWings(ctx) {
     const results = await Wing.find();
+    ctx.body = JSON.stringify(results);
+}
+
+export async function getEvents(ctx) {
+    const results = await Wing.find({status:'accepted'});
     ctx.body = JSON.stringify(results);
 }
 
@@ -60,7 +66,6 @@ export async function postWing(ctx) {
         });
     }
 
-
     // console.log(parsed);
     // newsworth from python world
     //parsed.push({rating:{credibility, }})
@@ -70,6 +75,6 @@ export async function postWing(ctx) {
 
 export async function processWing(ctx) {
     const parsed = await parse(ctx);
-
-    await Wing.update({_id: parsed.id}, { $set: {processed: parsed.processed}})
+    await Wing.update({_id: parsed.id}, { $set: {processed: parsed.processed, status: parsed.status }})
+    ctx.body = {data: 'updated'};
 }

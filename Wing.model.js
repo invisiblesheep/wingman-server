@@ -34,7 +34,8 @@ const Wing = mongoose.model('Wing', new mongoose.Schema({
     status: {
         type: String,
         enum: ['accepted', 'declined', 'waiting']
-    }
+    },
+    flightsAffected: [String]
 }));
 
 export async function getDemWings() {

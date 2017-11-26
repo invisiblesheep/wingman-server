@@ -5,6 +5,10 @@ import parse from 'co-body';
 import serve from 'koa-static';
 import mongoose from 'mongoose';
 
+const io = require('socket.io')();
+
+import { getDemWings } from './Wing.model';
+
 console.log("asd");
 
 import config from './config';
@@ -32,19 +36,21 @@ app
     .use(router.allowedMethods());
 
 
-function startKoa() {
+async function startKoa() {
     app.listen(config.koa.port);
     console.log(`Listening on port ${config.koa.port}`);
-    // const socket = socketio.listen(app.listen(config.koa.port), {log: false});
-    // r.connect(config.rethinkdb).then(function(conn) {
-    //   return r.table('polls').orderBy({index: r.desc('createdAt')})
-    //     .limit(5).changes().run(conn);
-    // })
-    // .then(function(cursor) {
-    //   cursor.each(function(err, data) {
-    //     socket.sockets.emit('poll_updated', data);
-    //   });
-    // });
+    const socketio = io.listen(8000, {log: false});
+    socketio.on('connection', (client) => {
+      client.on('subscribeToTimer', (interval) => {
+        console.log('client is subscribing to timer with interval ', interval);
+        setInterval(async () => {
+          const demwings = await getDemWings();
+          client.emit('timer', demwings);
+        }, interval);
+      });
+    });
+
+
 }
 
 startKoa();

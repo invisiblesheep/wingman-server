@@ -37,7 +37,10 @@ const Wing = mongoose.model('Wing', new mongoose.Schema({
     }
 }));
 
-
+export async function getDemWings() {
+  const results = await Wing.find();
+  return JSON.stringify(results);
+}
 
 export async function getWings(ctx) {
     const results = await Wing.find({status: 'waiting'});
